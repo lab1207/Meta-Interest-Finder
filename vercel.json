@@ -6,6 +6,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/server.js" },
+    { "src": "/mcp", "dest": "/server.js" },
     { "src": "/", "dest": "/index.html" }
   ]
 }
