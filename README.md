@@ -1,5 +1,6 @@
 # fb-interest-backend
 Backend for Meta interest search tool, vercel app (Check HTML.index file for Server Deployment)
+# Now It Has Avaible MCP for Claude : we can now connect this tool directly in calude ai and find intrest there!
 
 ---------------------
 
