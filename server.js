@@ -39,4 +39,61 @@ app.get("/api/interests", async (req, res) => {
   }
 });
 
+app.post('/mcp', async (req, res) => {
+  const { method, params } = req.body;
+
+  if (method === 'tools/list') {
+    return res.json({
+      tools: [{
+        name: 'search_facebook_interests',
+        description: 'Search Facebook interests for Meta ad targeting. Returns interest names and audience sizes.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            query: {
+              type: 'string',
+              description: 'Interest keyword to search e.g. cricket, crypto, Zerodha'
+            }
+          },
+          required: ['query']
+        }
+      }]
+    });
+  }
+
+  if (method === 'tools/call') {
+    const query = params?.arguments?.query;
+    if (!query) {
+      return res.json({
+        content: [{ type: 'text', text: 'Error: query is required' }]
+      });
+    }
+
+    try {
+      const url = `${GRAPH}/search?type=adinterest&q=${encodeURIComponent(query)}&limit=20&access_token=${ACCESS_TOKEN}`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      const interests = (data.data || []).map(item => ({
+        name: item.name,
+        audience_size: item.audience_size_lower_bound
+          ? `${(item.audience_size_lower_bound / 1000000).toFixed(1)}M - ${(item.audience_size_upper_bound / 1000000).toFixed(1)}M`
+          : 'Unknown',
+        path: item.path || []
+      }));
+
+      return res.json({
+        content: [{ type: 'text', text: JSON.stringify(interests, null, 2) }]
+      });
+
+    } catch (e) {
+      return res.json({
+        content: [{ type: 'text', text: `Error: ${e.message}` }]
+      });
+    }
+  }
+
+  return res.json({ error: 'Unknown method' });
+});
+
 export default app;
