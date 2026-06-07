@@ -4,6 +4,13 @@ import cors from "cors";
 
 const app = express();
 app.use(cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://claude.ai');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
 app.use(express.json());
 
 const GRAPH = "https://graph.facebook.com/v20.0";
@@ -37,6 +44,29 @@ app.get("/api/interests", async (req, res) => {
     console.error('ERROR:', error);
     res.json({ data: [], error: error.message });
   }
+});
+
+app.get('/mcp', (req, res) => {
+  res.json({
+    name: "FB Interest Finder",
+    version: "1.0.0",
+    description: "Facebook interest search for Meta ad targeting",
+    auth: { type: "none" },
+    tools: [{
+      name: "search_facebook_interests",
+      description: "Search Facebook interests for Meta ad targeting",
+      inputSchema: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "Interest keyword to search"
+          }
+        },
+        required: ["query"]
+      }
+    }]
+  });
 });
 
 app.post('/mcp', async (req, res) => {
