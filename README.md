@@ -719,18 +719,6 @@ This project is actively maintained, and the roadmap will evolve based on commun
 
 ---
 
-## Future
-
-- [ ] Interest Explorer
-- [ ] Audience Insights
-- [ ] Related Interest Discovery
-- [ ] Web Dashboard
-- [ ] React SDK
-- [ ] Python SDK
-- [ ] Official NPM Package
-
----
-
 # 🤝 Contributing
 
 Contributions are welcome!
