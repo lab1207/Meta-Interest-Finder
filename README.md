@@ -15,6 +15,8 @@
 </p>
 
 <p align="center">
+  
+<img width="1219" height="566" alt="demogif1" src="https://github.com/user-attachments/assets/625de286-74ce-4c31-a1bd-d34ece43bc19" />
 
 A lightweight serverless backend that securely searches Meta (Facebook) advertising interests using the Meta Graph API, with native Claude MCP support.
 
