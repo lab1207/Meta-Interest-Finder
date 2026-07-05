@@ -707,32 +707,15 @@ Please review the included license before using the project commercially.
 
 # 🛣 Roadmap
 
-The following improvements are planned for future releases.
+Future improvements may include:
 
-## v1.1
+- [ ] Improved search capabilities
+- [ ] Better documentation
+- [ ] Additional Meta Graph API endpoints
+- [ ] Performance optimizations
+- [ ] Enhanced MCP integration
 
-- [ ] Better API validation
-- [ ] Improved error handling
-- [ ] Response caching
-- [ ] Better logging
-
----
-
-## v1.2
-
-- [ ] Docker support
-- [ ] OpenAPI documentation
-- [ ] SDK
-- [ ] CLI
-
----
-
-## v1.3
-
-- [ ] Authentication
-- [ ] Rate limiting
-- [ ] Analytics
-- [ ] Health endpoint
+This project is actively maintained, and the roadmap will evolve based on community feedback and future development.
 
 ---
 
@@ -808,19 +791,8 @@ for making projects like this possible.
 
 ---
 
-# 🌟 Support
-
-If this project helped you, consider giving it a ⭐ on GitHub.
-
-It helps others discover the project and supports future development.
-
----
 
 <div align="center">
-
-## ⭐ Star this repository if you found it useful!
-
-Built with ❤️ by **Vaibhav Hajare**
 
 **Happy Building! 🚀**
 
