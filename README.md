@@ -1,158 +1,219 @@
-# 🚀 FB Interest Backend
+<div align="center">
 
-> Fast backend API for searching Meta (Facebook) advertising interests.
+# 🚀 Meta Interest Finder
 
-![Node.js](https://img.shields.io/badge/Node.js-20+-green?style=for-the-badge)
-![Express](https://img.shields.io/badge/Express.js-Backend-black?style=for-the-badge)
-![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+### Search Meta (Facebook) Advertising Interests with a Fast, Secure & MCP-Compatible API
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+<img src="https://img.shields.io/badge/Express.js-Backend-000000?style=for-the-badge&logo=express" />
+<img src="https://img.shields.io/badge/Vercel-Ready-000000?style=for-the-badge&logo=vercel" />
+<img src="https://img.shields.io/badge/Claude-MCP-7C3AED?style=for-the-badge" />
+<img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" />
+
+</p>
+
+<p align="center">
+
+A lightweight serverless backend that securely searches Meta (Facebook) advertising interests using the Meta Graph API, with native Claude MCP support.
+
+</p>
+
+</div>
 
 ---
 
-## 📖 About
+# 📖 Overview
 
-FB Interest Backend is a lightweight backend service that powers Meta (Facebook) interest searching.
+Meta Interest Finder is a lightweight backend service built for developers, marketers, AI applications, and automation tools that need to search Meta advertising interests securely.
 
-It acts as a backend API for applications that need to search and retrieve Facebook advertising interests without exposing sensitive logic on the frontend.
+Instead of exposing your Meta Access Token inside frontend applications, Meta Interest Finder keeps all communication with the Meta Graph API on the server.
 
-Designed to be simple, fast, and easy to deploy on **Vercel**.
+The project is optimized for **Vercel Serverless Functions**, making deployment fast, simple, and scalable.
+
+It also includes **native Model Context Protocol (MCP)** support, allowing Claude Desktop and other MCP-compatible AI assistants to search Meta advertising interests directly during conversations.
 
 ---
 
-## ✨ Features
+# ✨ Why Meta Interest Finder?
+
+Searching Meta advertising interests isn't as straightforward as making a single API request from the browser.
+
+Developers often run into problems like:
+
+- Exposing Meta Access Tokens
+- CORS restrictions
+- Complex Graph API requests
+- Difficult deployment
+- Repetitive backend setup
+
+Meta Interest Finder solves these problems by providing a production-ready backend that can be deployed in minutes.
+
+---
+
+# 🚀 Features
+
+## 🔍 Search Advertising Interests
+
+Search thousands of Meta advertising interests directly through a simple REST API.
+
+---
+
+## 🔐 Secure Token Storage
+
+Your Meta Access Token never leaves your backend.
+
+Unlike frontend implementations, sensitive credentials remain protected using server-side environment variables.
+
+---
+
+## ⚡ Serverless
+
+Optimized for Vercel Serverless Functions.
+
+No infrastructure management.
+
+No VPS required.
+
+Deploy in minutes.
+
+---
+
+## 🤖 Claude MCP Compatible
+
+Connect directly to Claude Desktop using the Model Context Protocol (MCP).
+
+Claude can search Meta advertising interests during conversations without exposing your Meta credentials.
+
+---
+
+## 🌍 REST API
+
+Simple JSON API that can be integrated into:
+
+- SaaS products
+- Internal tools
+- Marketing platforms
+- AI agents
+- Browser extensions
+- Desktop applications
+
+---
+
+## 📦 Lightweight
+
+Built using a minimal Express.js backend with very few dependencies.
+
+Simple architecture.
+
+Easy to extend.
+
+---
+
+## 🚀 Fast
+
+Designed for low-latency interest searching while minimizing unnecessary processing.
+
+---
+
+# 🖼 Architecture
+
+```text
+                 Search Request
+                        │
+                        ▼
+         ┌─────────────────────────┐
+         │  Meta Interest Finder   │
+         │      Express API        │
+         └─────────────────────────┘
+                        │
+                        ▼
+              Meta Graph API
+                        │
+                        ▼
+             Interest Search Results
+                        │
+                        ▼
+                JSON Response
+```
+
+---
+
+# 🤖 Claude MCP Support
+
+One of the most powerful features of this project is native support for the **Model Context Protocol (MCP)**.
+
+This allows Claude Desktop to communicate directly with Meta Interest Finder as an external tool.
+
+Instead of manually opening Meta Ads Manager to search interests, Claude can perform the search on your behalf and return structured results inside your conversation.
+
+Example workflow:
+
+```text
+User
+   │
+   ▼
+Claude Desktop
+   │
+   ▼
+Meta Interest Finder (MCP)
+   │
+   ▼
+Meta Graph API
+   │
+   ▼
+JSON Results
+   │
+   ▼
+Claude Response
+```
+
+---
+
+# 💼 Use Cases
+
+Meta Interest Finder can be integrated into a wide variety of applications.
+
+### 📈 Marketing Platforms
+
+Build audience research tools powered by Meta interest search.
+
+---
+
+### 🤖 AI Assistants
+
+Allow AI agents to discover advertising interests dynamically using MCP.
+
+---
+
+### 📊 Internal Dashboards
+
+Create internal marketing dashboards without exposing API credentials.
+
+---
+
+### 🧩 SaaS Products
+
+Add Meta interest search functionality directly into your own software.
+
+---
+
+### 🔬 Audience Research
+
+Discover related interests while planning Meta advertising campaigns.
+
+---
+
+# 🌟 Highlights
 
 - 🔍 Search Meta advertising interests
-- ⚡ Fast backend API
-- 🌐 Ready for Vercel deployment
-- 📦 Lightweight architecture
-- 🔒 Keeps backend logic hidden from frontend
-- 🚀 Easy to integrate with any frontend
-
----
-
-## 🛠 Tech Stack
-
-- Node.js
-- Express.js
-- Vercel Serverless Functions
-- JavaScript
-
----
-
-## 📁 Project Structure
-
-```
-fb-interest-backend
-│
-├── server.js          # Backend API
-├── index.html         # Vercel deployment entry
-├── package.json
-├── vercel.json
-└── README.md
-```
-
----
-
-## 🚀 Getting Started
-
-### Clone Repository
-
-```bash
-git clone https://github.com/lab1207/fb-interest-backend.git
-```
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
-### Start Development Server
-
-```bash
-npm start
-```
-
----
-
-## 🌍 Deployment
-
-This project is configured for deployment on **Vercel**.
-
-Deploy using:
-
-```bash
-vercel
-```
-
-or connect the GitHub repository directly to Vercel.
-
----
-
-## 📡 API
-
-Example endpoint:
-
-```
-GET /search?query=fitness
-```
-
-Response
-
-```json
-{
-  "success": true,
-  "results": [
-    {
-      "id": "...",
-      "name": "Fitness"
-    }
-  ]
-}
-```
-
-> Replace the endpoint examples with your actual API routes.
-
----
-
-## 💡 Use Cases
-
-- Meta Ads research tools
-- Interest finder applications
-- Marketing software
-- Audience research
-- Facebook Ads utilities
-
----
-
-## 🗺 Roadmap
-
-- [ ] Improved error handling
-- [ ] Better API documentation
-- [ ] Rate limiting
-- [ ] Response caching
-- [ ] Analytics
-- [ ] Authentication
-- [ ] Docker support
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome.
-
-If you'd like to improve this project, feel free to fork the repository and submit a pull request.
-
----
-
-## 📄 License
-
-MIT License
-
----
-
-## ⭐ Support
-
-If you found this project useful, consider giving it a ⭐ on GitHub.
-
-It helps the project reach more developers.
+- 🔒 Secure backend architecture
+- ⚡ Vercel optimized
+- 🤖 Claude MCP support
+- 🌍 REST API
+- 📦 Lightweight Express server
+- 🚀 Fast deployment
+- 🔐 Environment variable support
+- 📈 Marketing tool ready
+- 🧩 Easy integration
