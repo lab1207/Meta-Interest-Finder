@@ -217,3 +217,358 @@ Discover related interests while planning Meta advertising campaigns.
 - 🔐 Environment variable support
 - 📈 Marketing tool ready
 - 🧩 Easy integration
+
+---
+
+# ⚡ Quick Start
+
+Deploy Meta Interest Finder in under **5 minutes**.
+
+```bash
+git clone https://github.com/lab1207/meta-interest-finder.git
+
+cd meta-interest-finder
+
+npm install
+```
+
+Create your environment variable:
+
+```env
+META_TOKEN=YOUR_META_GRAPH_ACCESS_TOKEN
+```
+
+Start the development server:
+
+```bash
+npm start
+```
+
+The API is now ready to accept requests.
+
+---
+
+# 💻 Local Development
+
+## Requirements
+
+Before running the project, ensure you have:
+
+- Node.js 18+
+- npm
+- A Meta Developer Account
+- A valid Meta Graph API Access Token
+
+---
+
+## Installation
+
+Clone the repository.
+
+```bash
+git clone https://github.com/lab1207/meta-interest-finder.git
+```
+
+Move into the project.
+
+```bash
+cd meta-interest-finder
+```
+
+Install dependencies.
+
+```bash
+npm install
+```
+
+Create an environment file.
+
+```env
+META_TOKEN=YOUR_META_TOKEN
+```
+
+Start the server.
+
+```bash
+npm start
+```
+
+---
+
+# ☁️ Deploy to Vercel
+
+Meta Interest Finder is optimized for **Vercel Serverless Functions**.
+
+Deployment only takes a few minutes.
+
+---
+
+## Step 1 — Import Repository
+
+Login to Vercel.
+
+Click
+
+```
+New Project
+```
+
+Select
+
+```
+meta-interest-finder
+```
+
+Leave the Framework Preset as:
+
+```
+Other
+```
+
+Click
+
+```
+Deploy
+```
+
+---
+
+## Step 2 — Configure Environment Variables
+
+Navigate to
+
+```
+Project
+
+↓
+
+Settings
+
+↓
+
+Environment Variables
+```
+
+Create
+
+| Variable | Value |
+|-----------|-------|
+| META_TOKEN | Your Meta Graph API Token |
+
+Save the configuration.
+
+Redeploy the project.
+
+---
+
+## Step 3 — Verify Deployment
+
+Open your deployed URL.
+
+Example
+
+```http
+GET
+
+https://your-project.vercel.app/api/interests?q=fitness
+```
+
+If everything is configured correctly, the API will return matching Meta advertising interests.
+
+---
+
+# 🔐 Environment Variables
+
+The project uses environment variables to securely communicate with the Meta Graph API.
+
+## Required Variables
+
+| Variable | Required | Description |
+|-----------|----------|-------------|
+| META_TOKEN | ✅ | Meta Graph API Access Token |
+
+Never expose this token inside frontend applications.
+
+Always keep it on the server.
+
+---
+
+# 🔑 Required Meta Permissions
+
+Your Meta Access Token should include the following permissions.
+
+| Permission | Purpose |
+|------------|---------|
+| ads_read | Access advertising interest search |
+| business_management | Access Business Manager resources |
+| read_insights | Retrieve audience information |
+| pages_show_list | Access associated Pages |
+
+These permissions represent the minimum recommended configuration.
+
+---
+
+# 📡 REST API
+
+Meta Interest Finder exposes a lightweight REST API.
+
+---
+
+## Search Interests
+
+```http
+GET /api/interests
+```
+
+---
+
+### Parameters
+
+| Name | Required | Description |
+|------|----------|-------------|
+| q | ✅ | Search keyword |
+| limit | ❌ | Maximum number of results |
+
+---
+
+### Example Request
+
+```http
+GET /api/interests?q=fitness
+```
+
+---
+
+### Example Request
+
+```http
+GET /api/interests?q=crypto&limit=25
+```
+
+---
+
+### Successful Response
+
+```json
+{
+  "success": true,
+  "results": [
+    {
+      "id": "6003139266461",
+      "name": "Fitness",
+      "audience_size_min": 1000000,
+      "audience_size_max": 3500000
+    }
+  ]
+}
+```
+
+---
+
+### Error Response
+
+```json
+{
+    "success": false,
+    "error": "Invalid Meta Access Token"
+}
+```
+
+---
+
+# 🤖 Claude MCP
+
+Meta Interest Finder includes native support for the **Model Context Protocol (MCP)**.
+
+This allows Claude Desktop to access Meta advertising interest search directly through your backend.
+
+Supported endpoints:
+
+```http
+GET /mcp
+
+POST /mcp
+```
+
+Available Tool
+
+```
+search_facebook_interests
+```
+
+Example conversation
+
+```
+User
+
+↓
+
+Find interests related to coffee shops.
+
+↓
+
+Claude
+
+↓
+
+Calls Meta Interest Finder
+
+↓
+
+Meta Graph API
+
+↓
+
+Returns matching interests
+
+↓
+
+Claude formats the results.
+```
+
+No API keys are exposed to Claude.
+
+Everything remains securely hosted on your own server.
+
+---
+
+# 📦 Example Integrations
+
+Meta Interest Finder works well with:
+
+- Claude Desktop (MCP)
+- Custom AI Agents
+- SaaS Platforms
+- Internal Marketing Tools
+- Browser Extensions
+- Desktop Applications
+- Marketing Dashboards
+- Audience Research Platforms
+
+---
+
+# 🔒 Security
+
+Meta Interest Finder follows a backend-first architecture.
+
+```
+Frontend
+
+↓
+
+Meta Interest Finder
+
+↓
+
+Meta Graph API
+```
+
+This approach ensures:
+
+- API credentials remain private.
+- Frontend applications never receive sensitive tokens.
+- Easy key rotation.
+- Better security.
+- Cleaner architecture.
+
+---
