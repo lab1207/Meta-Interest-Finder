@@ -572,3 +572,256 @@ This approach ensures:
 - Cleaner architecture.
 
 ---
+
+# 📂 Project Structure
+
+The project is intentionally lightweight and easy to understand.
+
+```text
+meta-interest-finder
+│
+├── server.js
+│   Main Express server
+│   REST API
+│   MCP Server
+│   Meta Graph API integration
+│
+├── index.html
+│   Simple browser testing interface
+│
+├── package.json
+│   Project metadata and dependencies
+│
+├── vercel.json
+│   Vercel routing and deployment configuration
+│
+└── README.md
+```
+
+---
+
+# 🏗 Architecture
+
+The application follows a simple backend-first architecture.
+
+```text
+                Client Application
+                        │
+                        ▼
+          Meta Interest Finder API
+                        │
+          Authentication & Validation
+                        │
+                        ▼
+               Meta Graph API
+                        │
+                        ▼
+                JSON Response
+```
+
+This architecture ensures that your Meta Access Token is never exposed to frontend applications.
+
+---
+
+# ⚡ Performance
+
+Meta Interest Finder was designed with simplicity and speed in mind.
+
+### Current Characteristics
+
+- ⚡ Lightweight Express server
+- 🚀 Serverless deployment
+- 📦 Minimal dependencies
+- 🔒 Secure environment variables
+- 🌍 REST API
+- 🤖 MCP compatible
+- ☁️ Vercel optimized
+
+---
+
+# 💡 Example Use Cases
+
+## 📊 Audience Research
+
+Build tools that discover related Meta advertising interests.
+
+---
+
+## 🤖 AI Marketing Assistants
+
+Allow Claude or other AI assistants to search advertising interests using MCP.
+
+---
+
+## 📈 Marketing Platforms
+
+Integrate interest search directly into your SaaS.
+
+---
+
+## 🧩 Browser Extensions
+
+Power browser extensions without exposing Meta credentials.
+
+---
+
+## 📱 Internal Business Tools
+
+Give marketing teams secure access to advertising interests.
+
+---
+
+## ❓ Frequently Asked Questions
+
+### Does this project expose my Meta Access Token?
+
+No.
+
+The token remains securely stored on the backend using environment variables.
+
+---
+
+### Does it support Claude Desktop?
+
+Yes.
+
+The project includes native support for the **Model Context Protocol (MCP)**.
+
+---
+
+### Can I deploy this somewhere other than Vercel?
+
+Yes.
+
+Although optimized for Vercel, the project can run on any Node.js-compatible hosting platform.
+
+---
+
+### Can I use this in commercial projects?
+
+Yes.
+
+Please review the included license before using the project commercially.
+
+---
+
+# 🛣 Roadmap
+
+The following improvements are planned for future releases.
+
+## v1.1
+
+- [ ] Better API validation
+- [ ] Improved error handling
+- [ ] Response caching
+- [ ] Better logging
+
+---
+
+## v1.2
+
+- [ ] Docker support
+- [ ] OpenAPI documentation
+- [ ] SDK
+- [ ] CLI
+
+---
+
+## v1.3
+
+- [ ] Authentication
+- [ ] Rate limiting
+- [ ] Analytics
+- [ ] Health endpoint
+
+---
+
+## Future
+
+- [ ] Interest Explorer
+- [ ] Audience Insights
+- [ ] Related Interest Discovery
+- [ ] Web Dashboard
+- [ ] React SDK
+- [ ] Python SDK
+- [ ] Official NPM Package
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+Whether you're fixing bugs, improving documentation, or adding new features, your help is appreciated.
+
+## Getting Started
+
+1. Fork the repository
+2. Create a new branch
+3. Commit your changes
+4. Push your branch
+5. Open a Pull Request
+
+---
+
+# 🐛 Reporting Issues
+
+If you encounter a bug or have a feature request, please open a GitHub Issue.
+
+When reporting issues, include:
+
+- Operating System
+- Node.js Version
+- Deployment Platform
+- Steps to Reproduce
+- Expected Behavior
+- Actual Behavior
+
+---
+
+# 📜 License
+
+This project is released under the **MIT License**.
+
+You are free to:
+
+- Use
+- Modify
+- Distribute
+- Commercially use
+
+the software under the terms of the MIT License.
+
+---
+
+# ❤️ Acknowledgements
+
+Special thanks to:
+
+- Meta Graph API
+- Vercel
+- Express.js
+- Node.js
+- Anthropic MCP
+
+for making projects like this possible.
+
+---
+
+# 🌟 Support
+
+If this project helped you, consider giving it a ⭐ on GitHub.
+
+It helps others discover the project and supports future development.
+
+---
+
+<div align="center">
+
+## ⭐ Star this repository if you found it useful!
+
+Built with ❤️ by **Vaibhav Hajare**
+
+**Happy Building! 🚀**
+
+</div>
