@@ -253,8 +253,8 @@ The API is now ready to accept requests.
 ## Requirements
 
 Before running the project, ensure you have:
-
-- Node.js 18+
+- 18+
+- Node.js 
 - npm
 - A Meta Developer Account
 - A valid Meta Graph API Access Token
