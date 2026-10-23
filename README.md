@@ -1,789 +1,193 @@
 <div align="center">
+  <img src="assets/icon.svg" width="68" height="68" alt="Interest Ledger mark" />
+  <h1>Interest Ledger</h1>
+  <p><em>Find the audience behind the idea.</em></p>
+  <p><strong>A Meta ad-interest search desk for the moment before a campaign brief exists.</strong><br />
+  Search interest names and audience ranges, keep a shortlist, export the evidence, and ask the same question over MCP.<br />
+  Bring your own Graph token or configure one on the server. No fake results are bundled.</p>
 
-# 🚀 Meta Interest Finder
+  <p>
+    <a href="https://meta-interest-finder.vercel.app/"><img src="https://img.shields.io/badge/live-vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Live on Vercel" /></a>
+    <a href="https://meta-interest-finder.pages.dev/"><img src="https://img.shields.io/badge/mirror-cloudflare%20pages-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Pages mirror" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-1f4bff?style=flat-square" alt="GPL-3.0-or-later license" /></a>
+    <a href="https://github.com/lab1207/Meta-Interest-Finder/actions/workflows/ci.yml"><img src="https://github.com/lab1207/Meta-Interest-Finder/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status" /></a>
+    <a href="https://github.com/lab1207/Meta-Interest-Finder/stargazers"><img src="https://img.shields.io/github/stars/lab1207/Meta-Interest-Finder?style=flat-square&color=1f4bff" alt="GitHub stars" /></a>
+  </p>
 
-### Search Meta (Facebook) Advertising Interests with a Fast, Secure & MCP-Compatible API
-
-<p align="center">
-
-<img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=node.js&logoColor=white" />
-<img src="https://img.shields.io/badge/Express.js-Backend-000000?style=for-the-badge&logo=express" />
-<img src="https://img.shields.io/badge/Vercel-Ready-000000?style=for-the-badge&logo=vercel" />
-<img src="https://img.shields.io/badge/Claude-MCP-7C3AED?style=for-the-badge" />
-<img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" />
-
-</p>
-
-<p align="center">
-  
-<img width="1219" height="566" alt="demogif1" src="https://github.com/user-attachments/assets/625de286-74ce-4c31-a1bd-d34ece43bc19" />
-
-A lightweight serverless backend that securely searches Meta (Facebook) advertising interests using the Meta Graph API, with native Claude MCP support.
-
-</p>
-
+  <p><sub>If this saves you a round of ad-platform archaeology, a star helps.</sub></p>
 </div>
 
----
+<br />
 
-# 📖 Overview
+<img src="assets/preview-desktop.webp" alt="Interest Ledger desktop interface with its search desk and access panel" />
 
-Meta Interest Finder is a lightweight backend service built for developers, marketers, AI applications, and automation tools that need to search Meta advertising interests securely.
+<p align="center">
+  <img src="assets/preview-mobile.webp" width="310" alt="Interest Ledger mobile interface" />
+</p>
 
-Instead of exposing your Meta Access Token inside frontend applications, Meta Interest Finder keeps all communication with the Meta Graph API on the server.
+<p align="center"><sub>The live app before a Graph token is added. The empty state is honest: no search data is bundled.</sub></p>
 
-The project is optimized for **Vercel Serverless Functions**, making deployment fast, simple, and scalable.
+## The idea
 
-It also includes **native Model Context Protocol (MCP)** support, allowing Claude Desktop and other MCP-compatible AI assistants to search Meta advertising interests directly during conversations.
+Meta's ad-interest graph is useful when you have a rough audience in mind but not yet a campaign structure. The names and audience bounds are buried in a permissioned Graph API, and the surrounding tools often turn a rough search into a black box.
 
----
+Interest Ledger keeps the desk simple:
 
-# ✨ Why Meta Interest Finder?
+1. Search a word or phrase.
+2. Read the interest name, hierarchy path, and audience range.
+3. Keep the useful rows in a shortlist.
+4. Export the shortlist as CSV, or call the same search through MCP.
 
-Searching Meta advertising interests isn't as straightforward as making a single API request from the browser.
+It is a research aid, not a prediction machine. Audience bounds are the estimates Meta returns; they are not a promise of reach, targeting eligibility, or campaign performance.
 
-Developers often run into problems like:
+## What it does
 
-- Exposing Meta Access Tokens
-- CORS restrictions
-- Complex Graph API requests
-- Difficult deployment
-- Repetitive backend setup
+- **Search Meta interests** with the Graph API `adinterest` search.
+- **Read the context**: name, path, numeric interest ID, and audience lower/upper bounds.
+- **Sort and filter** by relevance, name, or audience; filter to a minimum audience size.
+- **Build a shortlist** that persists in the browser's `localStorage` on that device.
+- **Export CSV** for a brief, a media plan, or a spreadsheet; copy visible IDs in one click.
+- **Paginate** through Graph results with a cursor.
+- **Ask over MCP** at `/mcp` with a `search_meta_interests` tool for agent workflows.
+- **Choose an access mode**: a token entered for the current tab, or a server-side `META_TOKEN` configured in Pages.
 
-Meta Interest Finder solves these problems by providing a production-ready backend that can be deployed in minutes.
-
----
-
-# 🚀 Features
-
-## 🔍 Search Advertising Interests
-
-Search thousands of Meta advertising interests directly through a simple REST API.
-
----
-
-## 🔐 Secure Token Storage
-
-Your Meta Access Token never leaves your backend.
-
-Unlike frontend implementations, sensitive credentials remain protected using server-side environment variables.
-
----
-
-## ⚡ Serverless
-
-Optimized for Vercel Serverless Functions.
-
-No infrastructure management.
-
-No VPS required.
-
-Deploy in minutes.
-
----
-
-## 🤖 Claude MCP Compatible
-
-Connect directly to Claude Desktop using the Model Context Protocol (MCP).
-
-Claude can search Meta advertising interests during conversations without exposing your Meta credentials.
-
----
-
-## 🌍 REST API
-
-Simple JSON API that can be integrated into:
-
-- SaaS products
-- Internal tools
-- Marketing platforms
-- AI agents
-- Browser extensions
-- Desktop applications
-
----
-
-## 📦 Lightweight
-
-Built using a minimal Express.js backend with very few dependencies.
-
-Simple architecture.
-
-Easy to extend.
-
----
-
-## 🚀 Fast
-
-Designed for low-latency interest searching while minimizing unnecessary processing.
-
----
-
-# 🖼 Architecture
-
-```text
-                 Search Request
-                        │
-                        ▼
-         ┌─────────────────────────┐
-         │  Meta Interest Finder   │
-         │      Express API        │
-         └─────────────────────────┘
-                        │
-                        ▼
-              Meta Graph API
-                        │
-                        ▼
-             Interest Search Results
-                        │
-                        ▼
-                JSON Response
-```
-
----
-
-# 🤖 Claude MCP Support
-
-One of the most powerful features of this project is native support for the **Model Context Protocol (MCP)**.
-
-This allows Claude Desktop to communicate directly with Meta Interest Finder as an external tool.
-
-Instead of manually opening Meta Ads Manager to search interests, Claude can perform the search on your behalf and return structured results inside your conversation.
-
-Example workflow:
-
-```text
-User
-   │
-   ▼
-Claude Desktop
-   │
-   ▼
-Meta Interest Finder (MCP)
-   │
-   ▼
-Meta Graph API
-   │
-   ▼
-JSON Results
-   │
-   ▼
-Claude Response
-```
-
----
-
-# 💼 Use Cases
-
-Meta Interest Finder can be integrated into a wide variety of applications.
-
-### 📈 Marketing Platforms
-
-Build audience research tools powered by Meta interest search.
-
----
-
-### 🤖 AI Assistants
-
-Allow AI agents to discover advertising interests dynamically using MCP.
-
----
-
-### 📊 Internal Dashboards
-
-Create internal marketing dashboards without exposing API credentials.
-
----
-
-### 🧩 SaaS Products
-
-Add Meta interest search functionality directly into your own software.
-
----
-
-### 🔬 Audience Research
-
-Discover related interests while planning Meta advertising campaigns.
-
----
-
-# 🌟 Highlights
-
-- 🔍 Search Meta advertising interests
-- 🔒 Secure backend architecture
-- ⚡ Vercel optimized
-- 🤖 Claude MCP support
-- 🌍 REST API
-- 📦 Lightweight Express server
-- 🚀 Fast deployment
-- 🔐 Environment variable support
-- 📈 Marketing tool ready
-- 🧩 Easy integration
-
----
-
-# ⚡ Quick Start
-
-Deploy Meta Interest Finder in under **5 minutes**.
-
-```bash
-git clone https://github.com/lab1207/meta-interest-finder.git
-
-cd meta-interest-finder
-
-npm install
-```
-
-Create your environment variable:
-
-```env
-META_TOKEN=YOUR_META_GRAPH_ACCESS_TOKEN
-```
-
-Start the development server:
-
-```bash
-npm start
-```
-
-The API is now ready to accept requests.
-
----
-
-# 💻 Local Development
-
-## Requirements
-
-Before running the project, ensure you have:
-- 18+
-- Node.js 
-- npm
-- A Meta Developer Account
-- A valid Meta Graph API Access Token
-
----
-
-## Installation
-
-Clone the repository.
-
-```bash
-git clone https://github.com/lab1207/meta-interest-finder.git
-```
-
-Move into the project.
-
-```bash
-cd meta-interest-finder
-```
-
-Install dependencies.
+## Run it locally
 
 ```bash
 npm install
+npm run dev
 ```
 
-Create an environment file.
-
-```env
-META_TOKEN=YOUR_META_TOKEN
-```
-
-Start the server.
+The Vite server is enough to work on the interface. To exercise `/api/*` and `/mcp`, use the Vercel CLI:
 
 ```bash
-npm start
+npm install
+npx vercel dev
 ```
 
----
+`vercel dev` serves the Vite app, the `api/` functions, and the `/mcp` rewrite. Copy `.env.example` to `.env.local` and add `META_TOKEN` if you want to test server-token mode locally. The same build also runs on the optional Cloudflare Pages runtime:
 
-# ☁️ Deploy to Vercel
-
-Meta Interest Finder is optimized for **Vercel Serverless Functions**.
-
-Deployment only takes a few minutes.
-
----
-
-## Step 1 — Import Repository
-
-Login to Vercel.
-
-Click
-
-```
-New Project
+```bash
+npm run build
+npx wrangler pages dev dist
 ```
 
-Select
+Open the local URL printed by the CLI. The access panel reports whether the runtime has a server token.
 
-```
-meta-interest-finder
-```
+## Access modes
 
-Leave the Framework Preset as:
+### 1. Browser token (BYOK)
 
-```
-Other
-```
+Paste a Meta Graph access token into the access panel and choose **Use token**. It is stored in `sessionStorage` for that browser tab, sent only to this app's own `/api/interests` function, and forwarded to Meta. It is not written to a cookie, `localStorage`, a log, or the repository.
 
-Click
+When Meta rejects the token, the app clears it and asks for another one. The token is never rendered into the page's HTML.
 
-```
-Deploy
-```
+### 2. Server token
 
----
+If the deployment has a `META_TOKEN` environment variable, the access panel reports a server token and the browser does not need to send one.
 
-## Step 2 — Configure Environment Variables
+For Vercel, add `META_TOKEN` under **Project Settings → Environment Variables** for Production, Preview, and Development, then redeploy. For the optional Cloudflare mirror:
 
-Navigate to
-
-```
-Project
-
-↓
-
-Settings
-
-↓
-
-Environment Variables
+```bash
+npx wrangler pages secret put META_TOKEN --project-name meta-interest-finder
 ```
 
-Create
+The server token is never sent to the browser. A public deployment using a server token lets any visitor search with that token, so add access control or rate limiting if that is not the desired policy. The existing Vercel project can keep using Vercel Authentication or its own access rules.
 
-| Variable | Value |
-|-----------|-------|
-| META_TOKEN | Your Meta Graph API Token |
+A token needs Graph API access to the ad interest search. Permissions and app review rules are controlled by Meta and can change. If a token is missing or lacks access, the app shows the error instead of inventing results.
 
-Save the configuration.
+## Endpoints
 
-Redeploy the project.
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/status` | Reports whether a server token is configured and which Graph version is used. |
+| `GET` | `/api/interests?q=sourdough&limit=50&after=...` | Searches the Graph API. Uses `META_TOKEN` if present, otherwise `X-Meta-Token`. |
+| `POST` | `/mcp` | Stateless JSON-RPC 2.0 endpoint with `initialize`, `tools/list`, and `tools/call`. |
 
----
+### API example
 
-## Step 3 — Verify Deployment
-
-Open your deployed URL.
-
-Example
-
-```http
-GET
-
-https://your-project.vercel.app/api/interests?q=fitness
+```bash
+curl -s 'https://meta-interest-finder.vercel.app/api/interests?q=sourdough&limit=5' \
+  -H "x-meta-token: $META_TOKEN"
 ```
 
-If everything is configured correctly, the API will return matching Meta advertising interests.
+### MCP example
 
----
-
-# 🔐 Environment Variables
-
-The project uses environment variables to securely communicate with the Meta Graph API.
-
-## Required Variables
-
-| Variable | Required | Description |
-|-----------|----------|-------------|
-| META_TOKEN | ✅ | Meta Graph API Access Token |
-
-Never expose this token inside frontend applications.
-
-Always keep it on the server.
-
----
-
-# 🔑 Required Meta Permissions
-
-Your Meta Access Token should include the following permissions.
-
-| Permission | Purpose |
-|------------|---------|
-| ads_read | Access advertising interest search |
-| business_management | Access Business Manager resources |
-| read_insights | Retrieve audience information |
-| pages_show_list | Access associated Pages |
-
-These permissions represent the minimum recommended configuration.
-
----
-
-# 📡 REST API
-
-Meta Interest Finder exposes a lightweight REST API.
-
----
-
-## Search Interests
-
-```http
-GET /api/interests
-```
-
----
-
-### Parameters
-
-| Name | Required | Description |
-|------|----------|-------------|
-| q | ✅ | Search keyword |
-| limit | ❌ | Maximum number of results |
-
----
-
-### Example Request
-
-```http
-GET /api/interests?q=fitness
-```
-
----
-
-### Example Request
-
-```http
-GET /api/interests?q=crypto&limit=25
-```
-
----
-
-### Successful Response
-
-```json
-{
-  "success": true,
-  "results": [
-    {
-      "id": "6003139266461",
-      "name": "Fitness",
-      "audience_size_min": 1000000,
-      "audience_size_max": 3500000
+```bash
+curl -s https://meta-interest-finder.vercel.app/mcp \
+  -H 'content-type: application/json' \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "search_meta_interests",
+      "arguments": { "q": "sourdough", "limit": 5 }
     }
-  ]
-}
+  }' \
+  -H "x-meta-token: $META_TOKEN"
 ```
 
----
+Omit `X-Meta-Token` when the server secret is configured. The MCP endpoint is intended for server-side clients; it does not ship a browser session or an access token of its own.
 
-### Error Response
+## How it works
 
-```json
-{
-    "success": false,
-    "error": "Invalid Meta Access Token"
-}
+- **Frontend:** React + Vite, with a deliberately editorial search sheet, a token panel, and a shortlist rail. Shortlist state is local to the browser.
+- **Vercel Functions:** `api/interests.js` validates the query and token, calls `https://graph.facebook.com/v20.0/search` with `type=adinterest`, and normalizes the response. `api/status.js` reports `serverToken` without exposing the secret, and `api/mcp.js` implements the JSON-RPC methods.
+- **Cloudflare Pages Functions:** `functions/` mirrors the same endpoints for the optional Cloudflare deployment.
+- **Routing:** `vercel.json` rewrites `/mcp` to `/api/mcp`; the static build is served from `dist/`.
+- **Graph helper:** the request and normalization logic lives in `api/_lib.js` for Vercel and `functions/_lib.ts` for Cloudflare.
+
+The Graph token is only used in the function or the request header. The browser never receives a server token.
+
+## Deploy
+
+### Vercel (primary)
+
+1. Import the repository into Vercel. The included `vercel.json` sets the build command, output directory, and `/mcp` rewrite.
+2. Add `META_TOKEN` as an environment variable if you want server-token mode. Leave it unset for BYOK-only.
+3. Deploy. Vercel serves the Vite build and the `api/` functions on the same domain.
+
+### Cloudflare Pages (optional)
+
+```bash
+npm run build
+npx wrangler pages deploy dist --project-name meta-interest-finder
 ```
 
----
+Set `META_TOKEN` as a Pages secret if you want server-token mode. The `functions/` directory is picked up automatically. The Cloudflare mirror is useful when you want a public, unprotected demo; the Vercel project can keep its existing access settings.
 
-# 🤖 Claude MCP
+## Privacy and security notes
 
-Meta Interest Finder includes native support for the **Model Context Protocol (MCP)**.
+- No account system, analytics, or server-side interest database.
+- Browser tokens live in `sessionStorage` for the tab; closing the tab clears them.
+- Server tokens belong in Vercel environment variables or Cloudflare Pages secrets, never in `vercel.json`, `wrangler.toml`, `.env` files, or commits.
+- The Graph API receives the search query and token over HTTPS.
+- The interface uses Google Fonts; the font request is the only third-party browser request in the default app.
+- If you run a public server-token deployment, protect it as you would any public API. A token can be abused even when it is not visible in the browser.
 
-This allows Claude Desktop to access Meta advertising interest search directly through your backend.
+## Limits
 
-Supported endpoints:
+- Meta controls the Graph API version, permissions, rate limits, and the meaning of audience bounds.
+- Results depend entirely on the token's access. There is no fallback dataset.
+- The app does not save searches or create campaigns; it is a research surface.
+- Audience values are estimates and should not be treated as exact reach.
+- `v20.0` is pinned in `api/_lib.js` and `functions/_lib.ts`; update both deliberately when Meta deprecates a version.
 
-```http
-GET /mcp
+## Contributing
 
-POST /mcp
+Small, focused improvements are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) first.
+
+The useful checks are:
+
+```bash
+npm ci
+npm run build
+npm run check:api
 ```
 
-Available Tool
+Never commit a real Meta token, a screenshot containing one, or a request log with an unredacted token.
 
-```
-search_facebook_interests
-```
+## License
 
-Example conversation
-
-```
-User
-
-↓
-
-Find interests related to coffee shops.
-
-↓
-
-Claude
-
-↓
-
-Calls Meta Interest Finder
-
-↓
-
-Meta Graph API
-
-↓
-
-Returns matching interests
-
-↓
-
-Claude formats the results.
-```
-
-No API keys are exposed to Claude.
-
-Everything remains securely hosted on your own server.
-
----
-
-# 📦 Example Integrations
-
-Meta Interest Finder works well with:
-
-- Claude Desktop (MCP)
-- Custom AI Agents
-- SaaS Platforms
-- Internal Marketing Tools
-- Browser Extensions
-- Desktop Applications
-- Marketing Dashboards
-- Audience Research Platforms
-
----
-
-# 🔒 Security
-
-Meta Interest Finder follows a backend-first architecture.
-
-```
-Frontend
-
-↓
-
-Meta Interest Finder
-
-↓
-
-Meta Graph API
-```
-
-This approach ensures:
-
-- API credentials remain private.
-- Frontend applications never receive sensitive tokens.
-- Easy key rotation.
-- Better security.
-- Cleaner architecture.
-
----
-
-# 📂 Project Structure
-
-The project is intentionally lightweight and easy to understand.
-
-```text
-meta-interest-finder
-│
-├── server.js
-│   Main Express server
-│   REST API
-│   MCP Server
-│   Meta Graph API integration
-│
-├── index.html
-│   Simple browser testing interface
-│
-├── package.json
-│   Project metadata and dependencies
-│
-├── vercel.json
-│   Vercel routing and deployment configuration
-│
-└── README.md
-```
-
----
-
-# 🏗 Architecture
-
-The application follows a simple backend-first architecture.
-
-```text
-                Client Application
-                        │
-                        ▼
-          Meta Interest Finder API
-                        │
-          Authentication & Validation
-                        │
-                        ▼
-               Meta Graph API
-                        │
-                        ▼
-                JSON Response
-```
-
-This architecture ensures that your Meta Access Token is never exposed to frontend applications.
-
----
-
-# ⚡ Performance
-
-Meta Interest Finder was designed with simplicity and speed in mind.
-
-### Current Characteristics
-
-- ⚡ Lightweight Express server
-- 🚀 Serverless deployment
-- 📦 Minimal dependencies
-- 🔒 Secure environment variables
-- 🌍 REST API
-- 🤖 MCP compatible
-- ☁️ Vercel optimized
-
----
-
-# 💡 Example Use Cases
-
-## 📊 Audience Research
-
-Build tools that discover related Meta advertising interests.
-
----
-
-## 🤖 AI Marketing Assistants
-
-Allow Claude or other AI assistants to search advertising interests using MCP.
-
----
-
-## 📈 Marketing Platforms
-
-Integrate interest search directly into your SaaS.
-
----
-
-## 🧩 Browser Extensions
-
-Power browser extensions without exposing Meta credentials.
-
----
-
-## 📱 Internal Business Tools
-
-Give marketing teams secure access to advertising interests.
-
----
-
-## ❓ Frequently Asked Questions
-
-### Does this project expose my Meta Access Token?
-
-No.
-
-The token remains securely stored on the backend using environment variables.
-
----
-
-### Does it support Claude Desktop?
-
-Yes.
-
-The project includes native support for the **Model Context Protocol (MCP)**.
-
----
-
-### Can I deploy this somewhere other than Vercel?
-
-Yes.
-
-Although optimized for Vercel, the project can run on any Node.js-compatible hosting platform.
-
----
-
-### Can I use this in commercial projects?
-
-Yes.
-
-Please review the included license before using the project commercially.
-
----
-
-# 🛣 Roadmap
-
-Future improvements may include:
-
-- [ ] Improved search capabilities
-- [ ] Better documentation
-- [ ] Additional Meta Graph API endpoints
-- [ ] Performance optimizations
-- [ ] Enhanced MCP integration
-
-This project is actively maintained, and the roadmap will evolve based on community feedback and future development.
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome!
-
-Whether you're fixing bugs, improving documentation, or adding new features, your help is appreciated.
-
-## Getting Started
-
-1. Fork the repository
-2. Create a new branch
-3. Commit your changes
-4. Push your branch
-5. Open a Pull Request
-
----
-
-# 🐛 Reporting Issues
-
-If you encounter a bug or have a feature request, please open a GitHub Issue.
-
-When reporting issues, include:
-
-- Operating System
-- Node.js Version
-- Deployment Platform
-- Steps to Reproduce
-- Expected Behavior
-- Actual Behavior
-
----
-
-# 📜 License
-
-This project is released under the **MIT License**.
-
-You are free to:
-
-- Use
-- Modify
-- Distribute
-- Commercially use
-
-the software under the terms of the MIT License.
-
----
-
-# ❤️ Acknowledgements
-
-Special thanks to:
-
-- Meta Graph API
-- Vercel
-- Express.js
-- Node.js
-- Anthropic MCP
-
-for making projects like this possible.
-
----
-
-
-<div align="center">
-
-**Happy Building! 🚀**
-
-</div>
+GPL-3.0-or-later. See [LICENSE](LICENSE).

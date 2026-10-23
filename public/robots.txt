@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://meta-interest-finder.vercel.app/sitemap.xml

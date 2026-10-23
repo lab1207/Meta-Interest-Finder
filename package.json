@@ -1,12 +1,28 @@
 {
-  "name": "fb-interest-backend",
-  "version": "1.0.0",
-  "main": "server.js",
+  "name": "meta-interest-finder",
+  "version": "2.0.0",
+  "private": true,
   "type": "module",
+  "description": "Search Meta ad interests and build an audience shortlist, without shipping a token.",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && tsc -p tsconfig.functions.json --noEmit && npm run check:api && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.functions.json --noEmit",
+    "check:functions": "tsc -p tsconfig.functions.json --noEmit",
+    "check:api": "node --check api/_lib.js && node --check api/status.js && node --check api/interests.js && node --check api/mcp.js"
+  },
   "dependencies": {
-    "express": "^4.18.2",
-    "node-fetch": "^3.3.2",
-    "cors": "^2.8.5",
-    "zod": "^3.23.8"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261022.1",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.2"
   }
 }

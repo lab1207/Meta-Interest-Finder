@@ -1,0 +1,3 @@
+# Local-only values for `wrangler pages dev`. Copy this file to `.dev.vars`.
+# Never commit a real token.
+META_TOKEN=""

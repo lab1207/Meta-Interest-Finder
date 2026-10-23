@@ -1,236 +1,40 @@
-<div id="interest-app" style="max-width:1100px;margin:0 auto;background:#18191f;padding:40px 0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif"></div>
-<script>
-(function(){
-  const mountId = "interest-app";
-  const API_URL = "/api/interests";  // ✅ FIXED: Relative URL (no Render.com)
-  const css = `
-  body{background:#18191f}
-  .ia-wrap{display:grid;grid-template-columns:1fr 340px;gap:30px}@media(max-width:1020px){.ia-wrap{grid-template-columns:1fr}}
-  .ia-main{padding:28px 22px;background:#23232b;border-radius:20px;box-shadow:0 8px 38px 0 rgba(62,58,150,0.12)}
-  .ia-hd{font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:12px;letter-spacing:-1px}
-  .ia-count{color:#ffe096;font-size:18px;font-weight:600;margin:2px 0 13px 0;display:block}
-  .ia-searchbox{display:flex;align-items:center;gap:10px;margin-bottom:22px}
-  .ia-input{flex:1;padding:18px 18px;font-size:19px;background:#171726;color:#fff;border:2px solid #5253e7;border-radius:13px;outline:none;transition:border .2s}
-  .ia-input:focus{border-color:#e938a8}
-  .ia-btn{padding:13px 27px;font-size:18px;font-weight:600;background:linear-gradient(90deg,#e938a8 0,#7157ff 70%);color:#fff;border:none;border-radius:10px;cursor:pointer;box-shadow:0 2px 11px 0 rgba(233,56,168,.12);transition:background .2s}
-  .ia-btn:hover{background:linear-gradient(87deg,#c32680,#4a36b6 65%)}
-  .ia-note{color:#ced2eb;font-size:15px;margin-bottom:18px;margin-top:10px}
-  .ia-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:15px}
-  @media(max-width:770px){.ia-grid{grid-template-columns:1fr 1fr;gap:7px}.ia-main{padding:8px 1px}}
-  .ia-input.small{padding:10px 10px;font-size:14px;min-width:0}
-  .ia-select{padding:10px 10px;border-radius:8px;border:1px solid #2f3167;background:#1b1c32;color:#dbe8f6;font-size:14px}
-  .ia-table{width:100%;border-spacing:0;border-radius:15px;box-shadow:0 2px 18px #140e3b0b;margin:0 0 10px 0;font-size:15px;background:#262839}
-  .ia-table th{color:#b3bbfe;background:#23242b;font-weight:600;padding:12px 6px;text-align:left;font-size:13.8px}
-  .ia-table td{color:#fff;padding:11px 7px;border-bottom:1px solid #21294d40}
-  .ia-table tr:last-child td{border-bottom:none}
-  .ia-badge{display:inline-block;background:#3c48e7;color:#fff;padding:2px 10px;border-radius:999px;font-size:12px;letter-spacing:.01em;font-weight:400;margin-left:6px}
-  .ia-save{background:#e938a8;color:#fff;border:none;border-radius:7px;padding:6px 14px;cursor:pointer;font-size:13px;margin-right:7px;margin-top:3px;box-shadow:none;font-weight:500}
-  .ia-save:hover{background:#cd3294}
-  .ia-pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin:16px 3px 0 0}
-  .ia-pager-btn{padding:5.5px 16px;border-radius:6px;border:1px solid #313165;background:#25253a;color:#b3bbfe;font-size:14px;cursor:pointer;font-weight:500}
-  .ia-pager-btn[disabled]{opacity:.6;cursor:default}
-  .ia-side{background:#20212b;color:#fff;padding:23px 19px 13px 19px;border-radius:17px;min-height:380px;box-shadow:0 4px 23px 0 rgba(113,86,234,.13);font-size:16px}
-  .ia-side-hd{font-weight:600;color:#e938a8;font-size:1.09em;margin-bottom:7px;margin-left:1px}
-  .ia-chip{display:inline-block;background:#333863;color:#fff;padding:6px 17px;border-radius:999px;font-size:14px;margin:6px 7px 2px 0;position:relative}
-  .ia-x{font-weight:bold;color:#e938a8;margin-left:10px;cursor:pointer}
-  .ia-copy-btn{display:inline-block;padding:7px 13px;border-radius:8px;background:#f2f6fc;color:#2070ed;border:1.3px solid #dbe8f6;font-size:13px;cursor:pointer;margin-right:8px;transition:background .13s}
-  .ia-copy-btn:hover{background:#d8e4fd}
-  .ia-clear-btn{display:inline-block;padding:7px 13px;border-radius:8px;background:#fff;color:#dc2540;border:1.3px solid #e7b4c2;font-size:13px;cursor:pointer;transition:background .14s}
-  .ia-clear-btn:hover{background:#f8e4ea}
-  @media(max-width:770px){.ia-wrap{grid-template-columns:1fr}.ia-main{padding:8px 1px}}`;
-
-  function formatSize(n) {
-    n = Number(n) || 0;
-    if (n >= 1e6) return (n/1e6).toFixed(n%1e6===0?0:1) + 'M';
-    if (n >= 1e3) return (n/1e3).toFixed(n%1e3===0?0:1) + 'K';
-    return n.toLocaleString();
-  }
-
-  function downloadCSV(rows, filename="interests.csv") {
-    const header = ["interest_name","interest_id","audience_min","audience_max","path"];
-    const data = [header].concat(rows.map(r=>[
-      r.name,
-      r.id,
-      r.audience_size_min||"",
-      r.audience_size_max||"",
-      Array.isArray(r.path)?r.path.join(" > "):(typeof r.path==="string"?r.path:"")
-    ]));
-    const csv = data.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");
-    const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(url);
-  }
-  function copyPlain(rows){
-    const text = rows.map(r=>r.name).join(", ");
-    navigator.clipboard.writeText(text).then(()=>alert("Copied to clipboard"));
-  }
-  function app(el){
-    let q = "";
-    let include = "";
-    let exclude = "";
-    let min = "";
-    let max = "";
-    let sort = "relevance";
-    let page=1;
-    const PER_PAGE=15;
-    let allMatches=[];
-    let pageRows=[];
-    let saved = [];
-    let loading = false;
-    let errorMsg = "";
-    async function fetchAll(q) {
-      loading = true; errorMsg = ""; render();
-      try{
-        const p = new URLSearchParams({ q: q.trim(), limit: "1000", locale: "en_US" });
-        const res = await fetch(API_URL + "?" + p.toString(), { method: "GET" });
-        if (!res.ok) throw new Error("Fetch failed");
-        const json = await res.json();
-        return Array.isArray(json.data) ? json.data : [];
-      }catch(e){errorMsg = "Could not load interests."; return [];}
-      finally{loading = false; render();}
-    }
-    function matches(r) {
-      const inc = include.trim().toLowerCase();
-      const exc = exclude.trim().toLowerCase();
-      const hasInc = !inc || r.name.toLowerCase().includes(inc);
-      const hasExc = exc && r.name.toLowerCase().includes(exc);
-      const above = !min || (r.audience_size_min||0) >= Number(min);
-      const below = !max || (r.audience_size_max||0) <= Number(max);
-      return hasInc && !hasExc && above && below;
-    }
-    function applySort(arr) {
-      if (sort === "name") return [...arr].sort((a,b)=>a.name.localeCompare(b.name));
-      if (sort === "size") return [...arr].sort((a,b)=>(b.audience_size_max||0)-(a.audience_size_max||0));
-      return [...arr].sort((a,b)=>{
-        const qa = Number(a.name.toLowerCase().startsWith(q.trim().toLowerCase()));
-        const qb = Number(b.name.toLowerCase().startsWith(q.trim().toLowerCase()));
-        if (qb!==qa) return qb-qa;
-        return (b.audience_size_max||0)-(a.audience_size_max||0);
-      });
-    }
-    async function search(){
-      const base = await fetchAll(q);
-      const byId = new Map();
-      base.forEach(r=>{
-        const id = String(r.id||""); if(!id) return;
-        if(!byId.has(id)) byId.set(id, {
-          id,
-          name: r.name || "",
-          path: r.path || r.topic || [],
-          audience_size_min: r.audience_size_lower_bound || r.audience_size_min || r.audience_size || 0,
-          audience_size_max: r.audience_size_upper_bound || r.audience_size_max || r.audience_size || 0
-        });
-      });
-      const arr = Array.from(byId.values());
-      allMatches = applySort(arr.filter(matches));
-      page = 1;
-      pageRows = allMatches.slice(0, PER_PAGE);
-      render();
-    }
-    function goto(p){
-      page = p;
-      const start = (page - 1) * PER_PAGE;
-      pageRows = allMatches.slice(start, start+PER_PAGE);
-      render();
-    }
-    function add(r){if(!saved.find(s=>s.id===r.id)) saved.push(r);render();}
-    function remove(id){saved=saved.filter(s=>s.id!==id);render();}
-    function clearSaved(){ if(confirm("Clear all saved interests?")){ saved = []; render(); } }
-    function renderPager(){
-      if(allMatches.length<=PER_PAGE) return '';
-      const pages=Math.max(1,Math.ceil(allMatches.length/PER_PAGE));
-      let html='<div class="ia-pager">';
-      html+=`<button class="ia-pager-btn" ${page===1?'disabled':''} data-page="prev">Prev</button>`;
-      html+=`<button class="ia-pager-btn" ${page===pages?'disabled':''} data-page="next">Next</button>`;
-      html+=`<span style="color:#90a0e0;margin-left:8px;font-size:13px">${(page-1)*PER_PAGE+1}-${Math.min(page*PER_PAGE,allMatches.length)} of ${allMatches.length}</span>`;
-      html+='</div>';
-      return html;
-    }
-    function render(){
-      el.innerHTML = `
-        <style>${css}</style>
-        <div class="ia-wrap">
-          <div class="ia-main">
-            <div class="ia-hd">👋 Discover Facebook Interests</div>
-            <span class="ia-count">Search Results: ${allMatches.length}</span>
-            <div class="ia-searchbox">
-              <input class="ia-input" placeholder="Search Interests..." value="${q}" id="ia-q" />
-              <button class="ia-btn" id="ia-find"><span style="font-size:21px;margin-right:7px">🔍</span>Explore</button>
-            </div>
-            <div class="ia-grid">
-              <input class="ia-input small" placeholder="Include keyword" value="${include}" id="ia-inc" />
-              <input class="ia-input small" placeholder="Exclude keyword" value="${exclude}" id="ia-exc" />
-              <input class="ia-input small" placeholder="Min audience" value="${min}" id="ia-min" />
-              <input class="ia-input small" placeholder="Max audience" value="${max}" id="ia-max" />
-              <select class="ia-select" id="ia-sort">
-                <option value="relevance" ${sort==="relevance"?"selected":""}>Sort: Relevance</option>
-                <option value="name" ${sort==="name"?"selected":""}>Sort: Name</option>
-                <option value="size" ${sort==="size"?"selected":""}>Sort: Audience size</option>
-              </select>
-            </div>
-            <div class="ia-note">Search exact or broad interests. Results show <b>name, audience size, and path</b>. Use filters for custom discovery.</div>
-            ${loading?`<div class="ia-note" style="color:#e938a8;font-weight:500;">Loading...</div>`:''}
-            ${errorMsg?`<div class="ia-note" style="color:#e938a8;font-weight:500;">${errorMsg}</div>`:''}
-            ${allMatches.length>0?`
-              <table class="ia-table">
-                <thead>
-                 <tr><th>Name</th><th>Audience</th><th>Path</th><th></th></tr>
-                </thead>
-                <tbody>
-                  ${allMatches.slice((page-1)*PER_PAGE, page*PER_PAGE).map(r=>`<tr>
-                    <td>${r.name}</td>
-                    <td style="font-weight:600;color:#ffeeab">${formatSize(r.audience_size_min)}–${formatSize(r.audience_size_max)}</td>
-                    <td><span class="ia-badge">${Array.isArray(r.path) ? r.path.join(' > ') : (typeof r.path === 'string' ? r.path : 'Interest')}</span></td>
-                    <td><button class="ia-save" data-add="${r.id}">Save</button></td>
-                  </tr>`).join('')}
-                </tbody>
-              </table>
-              ${renderPager()}
-            `: (q?`<div class="ia-note">No interests found for your search.</div>`:"")}
-          </div>
-          <div class="ia-side">
-            <div class="ia-side-hd">Saved interests</div>
-            <div class="ia-note">Export or copy for Ads Manager lists.</div>
-            <div style="margin-bottom:10px;">
-              <button class="ia-copy-btn" id="ia-copy">Copy</button>
-              <button class="ia-copy-btn" id="ia-csv">CSV</button>
-              <button class="ia-clear-btn" id="ia-clear">Clear</button>
-            </div>
-            <div id="ia-saved">
-              ${saved.length===0?`<div class="ia-note">No interests saved yet.</div>`:
-                saved.map(s=>`<span class="ia-chip">${s.name}<span class="ia-x" data-remove="${s.id}">&times;</span></span>`).join("")
-              }
-            </div>
-          </div>
-        </div>
-      `;
-      el.querySelector("#ia-q").oninput=e=>{q=e.target.value;};
-      el.querySelector("#ia-find").onclick=search;
-      el.querySelector("#ia-inc").oninput = e=>{ include = e.target.value; };
-      el.querySelector("#ia-exc").oninput = e=>{ exclude = e.target.value; };
-      el.querySelector("#ia-min").oninput = e=>{ min = e.target.value; };
-      el.querySelector("#ia-max").oninput = e=>{ max = e.target.value; };
-      const sortSel = el.querySelector("#ia-sort"); if(sortSel) sortSel.onchange=e=>{ sort = e.target.value; goto(1); };
-      el.querySelectorAll("[data-add]").forEach(b=>{b.onclick=()=>{const id=b.getAttribute("data-add");const r=allMatches.find(x=>x.id===id);if(r) add(r);};});
-      el.querySelectorAll("[data-remove]").forEach(b=>{b.onclick=()=>{const id=b.getAttribute("data-remove");remove(id);};});
-      const pages=Math.max(1,Math.ceil(allMatches.length/PER_PAGE));
-      const pagerPrev = el.querySelector('[data-page="prev"]');
-      const pagerNext = el.querySelector('[data-page="next"]');
-      if (pagerPrev) pagerPrev.onclick = ()=>{ if(page>1) goto(page-1); };
-      if (pagerNext) pagerNext.onclick = ()=>{ if(page<pages) goto(page+1); };
-      const copyBtn = el.querySelector("#ia-copy");
-      const csvBtn = el.querySelector("#ia-csv");
-      const clrBtn = el.querySelector("#ia-clear");
-      if (copyBtn) copyBtn.onclick = ()=>copyPlain(saved);
-      if (csvBtn) csvBtn.onclick = ()=>downloadCSV(saved);
-      if (clrBtn) clrBtn.onclick = ()=>{ if(confirm("Clear all saved interests?")){ saved=[]; render(); } };
-    }
-    render();
-  }
-  const el=document.getElementById(mountId);
-  if(el) app(el);
-})();
-</script>
-
-
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Search Meta ad interests, compare audience ranges, and keep a shortlist. Bring your own Graph token or connect a server token."
+    />
+    <meta name="theme-color" content="#f4f1e8" />
+    <meta property="og:title" content="Interest Ledger — Meta interest finder" />
+    <meta
+      property="og:description"
+      content="Find the audience behind the idea. Search Meta ad interests without a token baked into the page."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:url" content="https://meta-interest-finder.vercel.app/" />
+    <meta property="og:site_name" content="lab1207" />
+    <meta property="og:image" content="https://meta-interest-finder.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Interest Ledger — Meta interest finder" />
+    <meta name="twitter:title" content="Interest Ledger — Meta interest finder" />
+    <meta name="twitter:image" content="https://meta-interest-finder.vercel.app/og.png" />
+    <link rel="canonical" href="https://meta-interest-finder.vercel.app/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Interest Ledger — Meta interest finder</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
