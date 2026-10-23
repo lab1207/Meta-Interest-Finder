@@ -7,10 +7,9 @@
   Bring your own Graph token or configure one on the server. No fake results are bundled.</p>
 
   <p>
-    <a href="https://meta-interest-finder.vercel.app/"><img src="https://img.shields.io/badge/live-vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Live on Vercel" /></a>
-    <a href="https://meta-interest-finder.pages.dev/"><img src="https://img.shields.io/badge/mirror-cloudflare%20pages-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Pages mirror" /></a>
+    <a href="https://meta-interest-finder.pages.dev/"><img src="https://img.shields.io/badge/live%20demo-cloudflare%20pages-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Live demo on Cloudflare Pages" /></a>
+    <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flab1207%2FMeta-Interest-Finder"><img src="https://img.shields.io/badge/deploy-vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Deploy with Vercel" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-1f4bff?style=flat-square" alt="GPL-3.0-or-later license" /></a>
-    <a href="https://github.com/lab1207/Meta-Interest-Finder/actions/workflows/ci.yml"><img src="https://github.com/lab1207/Meta-Interest-Finder/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status" /></a>
     <a href="https://github.com/lab1207/Meta-Interest-Finder/stargazers"><img src="https://img.shields.io/github/stars/lab1207/Meta-Interest-Finder?style=flat-square&color=1f4bff" alt="GitHub stars" /></a>
   </p>
 
@@ -107,14 +106,14 @@ A token needs Graph API access to the ad interest search. Permissions and app re
 ### API example
 
 ```bash
-curl -s 'https://meta-interest-finder.vercel.app/api/interests?q=sourdough&limit=5' \
+curl -s 'https://meta-interest-finder.pages.dev/api/interests?q=sourdough&limit=5' \
   -H "x-meta-token: $META_TOKEN"
 ```
 
 ### MCP example
 
 ```bash
-curl -s https://meta-interest-finder.vercel.app/mcp \
+curl -s https://meta-interest-finder.pages.dev/mcp \
   -H 'content-type: application/json' \
   -d '{
     "jsonrpc": "2.0",
@@ -142,11 +141,13 @@ The Graph token is only used in the function or the request header. The browser 
 
 ## Deploy
 
-### Vercel (primary)
+### Vercel (primary target)
 
 1. Import the repository into Vercel. The included `vercel.json` sets the build command, output directory, and `/mcp` rewrite.
 2. Add `META_TOKEN` as an environment variable if you want server-token mode. Leave it unset for BYOK-only.
 3. Deploy. Vercel serves the Vite build and the `api/` functions on the same domain.
+
+The public demo badge above points at the Cloudflare mirror, which is the currently deployed public instance. The Vercel project can be redeployed from the same repository when you want the Vercel URL to serve this build.
 
 ### Cloudflare Pages (optional)
 
