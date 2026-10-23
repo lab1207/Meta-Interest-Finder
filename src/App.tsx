@@ -20,6 +20,11 @@ type SearchResponse = {
   error?: { code?: string; message?: string };
 };
 
+type StatusResponse = {
+  serverToken?: boolean;
+  graphVersion?: string;
+};
+
 type Sort = "relevance" | "name" | "audience";
 
 const SAVED_KEY = "interest-ledger:saved:v1";
@@ -134,6 +139,15 @@ function ArrowIcon() {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <circle cx="8.5" cy="8.5" r="5.25" />
+      <path d="m12.5 12.5 4 4" />
+    </svg>
+  );
+}
+
 export default function App() {
   const [query, setQuery] = useState("");
   const [lastQuery, setLastQuery] = useState("");
@@ -143,6 +157,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [serverToken, setServerToken] = useState(false);
+  const [graphVersion, setGraphVersion] = useState("");
   const [statusChecked, setStatusChecked] = useState(false);
   const [token, setToken] = useState(readSessionToken);
   const [tokenDraft, setTokenDraft] = useState("");
@@ -160,10 +175,12 @@ export default function App() {
     fetch("/api/status")
       .then(async (response) => {
         if (!response.ok) throw new Error("status unavailable");
-        return (await response.json()) as { serverToken?: boolean };
+        return (await response.json()) as StatusResponse;
       })
       .then((payload) => {
-        if (active) setServerToken(Boolean(payload.serverToken));
+        if (!active) return;
+        setServerToken(Boolean(payload.serverToken));
+        setGraphVersion(payload.graphVersion || "");
       })
       .catch(() => {
         // The BYOK path still works if the status endpoint is unavailable
@@ -237,15 +254,23 @@ export default function App() {
     [saved],
   );
 
-  const runSearch = async (term: string, after?: string) => {
+  const runSearch = async (
+    term: string,
+    after?: string,
+    tokenOverride?: string,
+  ) => {
     const q = term.trim();
+    const activeToken = serverToken
+      ? ""
+      : (tokenOverride ?? token).trim();
+
     if (!q) {
       setError("Enter a word or phrase to search Meta interests.");
       return;
     }
-    if (!hasToken) {
+    if (!serverToken && !activeToken) {
       setError(
-        "Add a Meta Graph access token below. The page does not ship with one.",
+        "Add a Meta Graph access token in the access panel, then search again.",
       );
       tokenRef.current?.focus();
       return;
@@ -261,15 +286,16 @@ export default function App() {
       if (after) url.searchParams.set("after", after);
 
       const headers: Record<string, string> = { accept: "application/json" };
-      if (token) headers["x-meta-token"] = token;
+      if (activeToken) headers["x-meta-token"] = activeToken;
 
       const response = await fetch(url, { headers });
       const payload = (await response.json()) as SearchResponse;
 
       if (!response.ok) {
-        if (payload.error?.code === "invalid_token" && token) {
+        if (payload.error?.code === "invalid_token" && activeToken) {
           setToken("");
           window.sessionStorage.removeItem(TOKEN_KEY);
+          setNotice("Meta rejected that token, so it was removed.");
         }
         throw new Error(
           payload.error?.message || `The search failed (${response.status}).`,
@@ -328,6 +354,9 @@ export default function App() {
     setTokenDraft("");
     setError(null);
     setNotice("Token saved for this browser tab.");
+    if (query.trim()) {
+      void runSearch(query, undefined, next);
+    }
   };
 
   const forgetToken = () => {
@@ -386,13 +415,15 @@ export default function App() {
     setQuery(term);
     if (!hasToken) {
       setError(
-        "Add a Meta Graph access token below, then search again. The page does not ship with one.",
+        "Add a Meta Graph access token in the access panel, then search again.",
       );
       tokenRef.current?.focus();
       return;
     }
     void runSearch(term);
   };
+
+  const graphLabel = graphVersion ? `Graph ${graphVersion}` : "the Graph API";
 
   return (
     <div className="site-shell">
@@ -430,21 +461,32 @@ export default function App() {
               behind the <em>idea.</em>
             </h1>
             <p className="hero-lede">
-              Search Meta&apos;s advertising interests, compare audience ranges,
-              and keep a shortlist you can act on. No token is baked into this
-              page.
+              Search the interests Meta uses for ad targeting, compare audience
+              ranges, and keep a shortlist you can act on. Bring your own token;
+              none is baked into this page.
             </p>
           </div>
 
           <aside className="access-panel" aria-labelledby="access-title">
             <div className="access-head">
               <span id="access-title">Access / Meta Graph</span>
-              <span
-                className={`access-light${
-                  hasToken && statusChecked ? " is-live" : ""
-                }`}
-                aria-hidden="true"
-              />
+              <span className="access-head-right">
+                <span className="access-head-status">
+                  {!statusChecked
+                    ? "Checking"
+                    : serverToken
+                      ? "Server token"
+                      : token
+                        ? "Session token"
+                        : "Not connected"}
+                </span>
+                <span
+                  className={`access-light${
+                    hasToken && statusChecked ? " is-live" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </span>
             </div>
             <div className="access-body">
               {!statusChecked ? (
@@ -506,11 +548,11 @@ export default function App() {
                   <p className="access-note">
                     Stored in sessionStorage, never in the page source.{" "}
                     <a
-                      href="https://developers.facebook.com/docs/marketing-apis/"
+                      href="https://developers.facebook.com/tools/explorer/"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Token help ↗
+                      Open Graph API Explorer ↗
                     </a>
                   </p>
                 </>
@@ -523,13 +565,13 @@ export default function App() {
           <div className="search-heading">
             <h2 id="search-title">Search the interest graph.</h2>
             <p>
-              Try a product, hobby, or audience. Results are live from the Meta
-              Graph API when a token is connected.
+              Try a product, hobby, or audience. Results come straight from the
+              Meta Graph API when a token is connected. No sample data.
             </p>
           </div>
           <form className="search-form" onSubmit={handleSubmit}>
             <span className="search-prefix" aria-hidden="true">
-              Q
+              <SearchIcon />
             </span>
             <label className="visually-hidden" htmlFor="interest-query">
               Search Meta interests
@@ -558,10 +600,10 @@ export default function App() {
               {!statusChecked
                 ? "Checking access…"
                 : serverToken
-                  ? "Server token connected / live Graph API"
+                  ? `Server token connected / ${graphLabel}`
                   : token
-                    ? "Session token active / live Graph API"
-                    : "Add a token to search the live Graph API"}
+                    ? `Session token active / ${graphLabel}`
+                    : `Add a token to query ${graphLabel}`}
             </span>
             {lastQuery && (
               <span className="search-last">
@@ -576,7 +618,7 @@ export default function App() {
             <div className="results-heading">
               <div>
                 <p className="eyebrow">The result sheet</p>
-                <h2 id="results-title">
+                <h2 id="results-title" aria-live="polite">
                   {hasSearched
                     ? `${visibleResults.length} interest${
                         visibleResults.length === 1 ? "" : "s"
@@ -705,7 +747,7 @@ export default function App() {
                         type="button"
                         onClick={() => downloadCsv(visibleResults)}
                       >
-                        Export results
+                        Export CSV
                       </button>
                       <button
                         className="text-button"

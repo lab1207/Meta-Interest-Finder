@@ -5,7 +5,7 @@
  * same request/response shape for the Vercel deployment in `api/`.
  */
 
-const GRAPH_VERSION = "v20.0";
+const GRAPH_VERSION = "v26.0";
 
 export function sendJson(res, status, body) {
   res.status(status);

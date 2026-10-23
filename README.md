@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/icon.svg" width="68" height="68" alt="Interest Ledger mark" />
+  <img src="https://meta-interest-finder.pages.dev/readme/icon.png" width="68" height="68" alt="Interest Ledger mark" />
   <h1>Interest Ledger</h1>
   <p><em>Find the audience behind the idea.</em></p>
   <p><strong>A Meta ad-interest search desk for the moment before a campaign brief exists.</strong><br />
@@ -10,18 +10,16 @@
     <a href="https://meta-interest-finder.pages.dev/"><img src="https://img.shields.io/badge/live%20demo-cloudflare%20pages-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Live demo on Cloudflare Pages" /></a>
     <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flab1207%2FMeta-Interest-Finder"><img src="https://img.shields.io/badge/deploy-vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Deploy with Vercel" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-1f4bff?style=flat-square" alt="GPL-3.0-or-later license" /></a>
-    <a href="https://github.com/lab1207/Meta-Interest-Finder/stargazers"><img src="https://img.shields.io/github/stars/lab1207/Meta-Interest-Finder?style=flat-square&color=1f4bff" alt="GitHub stars" /></a>
+    <a href="https://developers.facebook.com/docs/graph-api/"><img src="https://img.shields.io/badge/Graph%20API-v26.0-1f4bff?style=flat-square" alt="Meta Graph API v26.0" /></a>
   </p>
-
-  <p><sub>If this saves you a round of ad-platform archaeology, a star helps.</sub></p>
 </div>
 
 <br />
 
-<img src="assets/preview-desktop.webp" alt="Interest Ledger desktop interface with its search desk and access panel" />
+<img src="https://meta-interest-finder.pages.dev/readme/preview-desktop.webp" alt="Interest Ledger desktop interface with its search desk and access panel" />
 
 <p align="center">
-  <img src="assets/preview-mobile.webp" width="310" alt="Interest Ledger mobile interface" />
+  <img src="https://meta-interest-finder.pages.dev/readme/preview-mobile.webp" width="310" alt="Interest Ledger mobile interface" />
 </p>
 
 <p align="center"><sub>The live app before a Graph token is added. The empty state is honest: no search data is bundled.</sub></p>
@@ -132,7 +130,7 @@ Omit `X-Meta-Token` when the server secret is configured. The MCP endpoint is in
 ## How it works
 
 - **Frontend:** React + Vite, with a deliberately editorial search sheet, a token panel, and a shortlist rail. Shortlist state is local to the browser.
-- **Vercel Functions:** `api/interests.js` validates the query and token, calls `https://graph.facebook.com/v20.0/search` with `type=adinterest`, and normalizes the response. `api/status.js` reports `serverToken` without exposing the secret, and `api/mcp.js` implements the JSON-RPC methods.
+- **Vercel Functions:** `api/interests.js` validates the query and token, calls `https://graph.facebook.com/v26.0/search` with `type=adinterest`, and normalizes the response. `api/status.js` reports `serverToken` without exposing the secret, and `api/mcp.js` implements the JSON-RPC methods.
 - **Cloudflare Pages Functions:** `functions/` mirrors the same endpoints for the optional Cloudflare deployment.
 - **Routing:** `vercel.json` rewrites `/mcp` to `/api/mcp`; the static build is served from `dist/`.
 - **Graph helper:** the request and normalization logic lives in `api/_lib.js` for Vercel and `functions/_lib.ts` for Cloudflare.
@@ -141,22 +139,22 @@ The Graph token is only used in the function or the request header. The browser 
 
 ## Deploy
 
-### Vercel (primary target)
+### Vercel (optional target)
 
 1. Import the repository into Vercel. The included `vercel.json` sets the build command, output directory, and `/mcp` rewrite.
 2. Add `META_TOKEN` as an environment variable if you want server-token mode. Leave it unset for BYOK-only.
 3. Deploy. Vercel serves the Vite build and the `api/` functions on the same domain.
 
-The public demo badge above points at the Cloudflare mirror, which is the currently deployed public instance. The Vercel project can be redeployed from the same repository when you want the Vercel URL to serve this build.
+The public demo badge points at the active Cloudflare Pages deployment. The Vercel project can be redeployed from the same repository when you want the Vercel URL to serve this build.
 
-### Cloudflare Pages (optional)
+### Cloudflare Pages (active demo)
 
 ```bash
 npm run build
 npx wrangler pages deploy dist --project-name meta-interest-finder
 ```
 
-Set `META_TOKEN` as a Pages secret if you want server-token mode. The `functions/` directory is picked up automatically. The Cloudflare mirror is useful when you want a public, unprotected demo; the Vercel project can keep its existing access settings.
+Set `META_TOKEN` as a Pages secret if you want server-token mode. The `functions/` directory is picked up automatically. The Cloudflare deployment is useful when you want a public, unprotected demo; the Vercel project can keep its existing access settings.
 
 ## Privacy and security notes
 
@@ -173,7 +171,7 @@ Set `META_TOKEN` as a Pages secret if you want server-token mode. The `functions
 - Results depend entirely on the token's access. There is no fallback dataset.
 - The app does not save searches or create campaigns; it is a research surface.
 - Audience values are estimates and should not be treated as exact reach.
-- `v20.0` is pinned in `api/_lib.js` and `functions/_lib.ts`; update both deliberately when Meta deprecates a version.
+- `v26.0` is pinned in `api/_lib.js` and `functions/_lib.ts`; update both deliberately when Meta deprecates a version.
 
 ## Contributing
 

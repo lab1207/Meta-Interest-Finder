@@ -1,5 +1,7 @@
 /// <reference types="@cloudflare/workers-types" />
 
+export const GRAPH_VERSION = "v26.0";
+
 export type Env = {
   META_TOKEN?: string;
 };
@@ -81,7 +83,9 @@ export async function searchInterests(options: {
   limit: number;
   after?: string;
 }): Promise<SearchResult> {
-  const url = new URL("https://graph.facebook.com/v20.0/search");
+  const url = new URL(
+    `https://graph.facebook.com/${GRAPH_VERSION}/search`,
+  );
   url.searchParams.set("type", "adinterest");
   url.searchParams.set("q", options.q);
   url.searchParams.set("limit", String(options.limit));

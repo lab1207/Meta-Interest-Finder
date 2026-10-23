@@ -1,4 +1,4 @@
-import { sendJson } from "./_lib.js";
+import { GRAPH_VERSION, sendJson } from "./_lib.js";
 
 export default function handler(req, res) {
   if (req.method !== "GET") {
@@ -9,7 +9,7 @@ export default function handler(req, res) {
 
   sendJson(res, 200, {
     serverToken: Boolean(process.env.META_TOKEN?.trim()),
-    graphVersion: "v20.0",
+    graphVersion: GRAPH_VERSION,
     runtime: "vercel",
   });
 }
